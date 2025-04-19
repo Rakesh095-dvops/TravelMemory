@@ -1,4 +1,4 @@
-# Travel Memory
+# Travel Memory - Locally 
 
 `.env` file to work with the backend after creating a database in mongodb: 
 
@@ -30,3 +30,41 @@ For frontend, you need to create `.env` file and put the following content (reme
 ```bash
 REACT_APP_BACKEND_URL=http://localhost:3001
 ```
+# Travel Memory - backend and frontend run as separate container
+`backend\.env` update it to work with backend image details
+```
+REACT_APP_BACKEND_URL=http://tmbackend:3001
+```
+- create a network and run backend application 
+```bash 
+# Create a network in docker
+docker network create myapp-network
+# Build the image
+docker build -t tmbackend:v1.0 .
+
+# Run the container
+docker run -d --name tmbackend --network myapp-network -p 3002:3001 tmbackend:v1.0
+```
+- run similar way and build frontend / backend 
+``` bash
+# Build the image
+docker build -t tmfrontend:v1.0 .
+
+# Run the container
+docker run -d --name tmfrontend --network myapp-network -p 3000:80  tmfrontend:v1.0
+
+```
+- Below commands can be used to investigate more on network 
+```bash
+# check running docker image 
+docker ps 
+# to stop the images 
+docker stop {container_id}
+# list all the networks 
+docker network ls
+# inspect the network 
+# both tmbackend,tmfrontend in same network
+docker network inspect myapp-network
+#check docker logs 
+docker logs {container_id}
+````

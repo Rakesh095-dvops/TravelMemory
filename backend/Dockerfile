@@ -7,7 +7,7 @@ RUN npm install
 COPY . .
 EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost3001/hello || exit 1
+  CMD curl -f http://localhost:3001/hello || exit 1
 CMD ["node", "index.js"]
 #CMD ["pm2","start',"index.js","--name "travelmemory-backend"]
 #RUN pm2 save
